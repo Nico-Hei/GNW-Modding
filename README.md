@@ -88,7 +88,9 @@ cmd.extend(["-c", "transport select swd"])
 cmd.extend(["-f", "target/stm32h7x.cfg"])
 yield "rpi-gpio", cmd
 ```
-*File*
+*[File](https://github.com/Nico-Hei/GNW-Modding/blob/main/openocd_backend.py)*
+
+`GNWMANAGER_VERBOSITY=debug gnwmanager info` now outputs correctly
 
 ## 4. Backups and bootloader unlock
 I already did this step but iam going to try to 
