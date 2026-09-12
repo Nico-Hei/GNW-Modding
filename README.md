@@ -36,7 +36,7 @@ I soldered 2 GPIO cables on the SWDIO and SWCLK ports without any problem but th
 We need gnwmanager because it provides a lot of usefull tools like flashing the chip banks of the gnw as well as unlock its bootloader.
 SSH into programmer. 
 
-Then iam installing pipx: `sudo apt install pipx -y` (pipx is like pip but with built in virtual environments).
+Then iam installing pipx: `sudo apt install pipx -y` (pipx is like pip but with built in virtual environments(only used for python applications, does not replace pip)).
 
 After this we can run `pipx install gnwmanager` to install gnwmanager.
 
@@ -98,3 +98,18 @@ I already did this step but normally you should use `gnwmanager unlock` now and 
 ## 5. Retro-Go installation
 Now we are going to install retro go as our firmware as it provides us with our game emulators.
 Iam not conducting or promoting game piracy. Please try to gather legally optained game copys.
+
+First clone the Retro Go repo with this command to install necessary sub modules
+`git clone --recurse-submodules https://github.com/sylverb/game-and-watch-retro-go -b filesystem_wip`
+Because of this not used emulators shouldnt be compiled every time. This saves storage and time.
+| I needed to install git at first `sudo apt install git`
+
+Then `cd game-and-watch-retro-go` cd into the folder.
+
+Install pip `sudo apt install python3-pip -y`
+
+Install venv `sudo apt install python3-venv -y`
+
+Create virtual environment for project: `python3 -m venv venv`
+
+Enter venv: `source venv/bin/activate`(Deactivate to exit it)
