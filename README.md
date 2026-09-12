@@ -49,5 +49,14 @@ Run `gnwmanager info` if following message pops up you installed it correctly
 ![GNWInfo](https://github.com/Nico-Hei/GNW-Modding/blob/main/RPI_GNW_Installation.png)
 The error is okay. It appears because I havent connected the game and watch to the pi yet.
 
-## 3. Backups and bootloader unlock
+## 3. Connecting 
+Connect your gnw to the pins on your rpi as shown on the image in the soldering step.
+Then either connect you battery again or charge the gnw via the usb c port.
+**If on any of the next steps you get weird errors check if your screen is on. The gnw has to be on most of the steps.**
+
+Make sure `gpiod is installed`.
+
+
+
+## 4. Backups and bootloader unlock
 I already did this step but iam going to try to 
