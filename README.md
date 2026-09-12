@@ -11,8 +11,10 @@ to redo the whole process of flashing the firmware as well as emulator and docum
 ### before being able to back it up (Unlocking the flash deleted everything).
 
 ## 1. Setting up the programmer
-Iam using a **Raspberry PI Zero W**(the old version). With its one core its not the fastet machine to build c but with enough time it is working good enough.
-Ive set it up with base 32 bit raspberry pi os lite and activated ssh.
+~~Iam using a **Raspberry PI Zero W**(the old version). With its one core its not the fastet machine to build c but with enough time it is working good enough.
+Ive set it up with base 32 bit raspberry pi os lite and activated ssh.~~
+My RPI0 is no longer in use and is being replaced by my RPI4(8gb). The RPI0 crashed to many times in the process on me while installing packages and was overall because of its speed not fun to use.
+The RPI4 might be a bit overkill but should help in the process of building packages later on.
 
 ## 2. Soldering and connecting wires
 ![PI0GPIO](https://github.com/Nico-Hei/GNW-Modding/blob/main/RPI_GNW_Pinout.png)
