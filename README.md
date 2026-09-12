@@ -56,7 +56,10 @@ Then either connect you battery again or charge the gnw via the usb c port.
 
 Make sure `gpiod is installed`.
 
+As I try to use `gnwmanager info` again the same error as before connecting occours.
 
+Using `GNWMANAGER_VERBOSITY=debug gnwmanager info` i get following error:
+![GNWError]()
 
 ## 4. Backups and bootloader unlock
 I already did this step but iam going to try to 
