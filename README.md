@@ -25,13 +25,12 @@ Next I check for the installed python. Regarding the gnwmanager installation gui
 `python --version` shows me that I currently have version 3.13.5 pre installed.
 
 ## 2. Soldering and connecting wires
-![PI0GPIO](https://github.com/Nico-Hei/GNW-Modding/blob/main/RPI_GNW_Pinout.png)
+![PIGPIO](https://github.com/Nico-Hei/GNW-Modding/blob/main/RPI_GNW_Pinout.png)
 *IMG source: https://pypi.org/project/gnwmanager/*
 
 I own the Zelda Version, as you can see the Pin Layout is the same the only difference is the 4MB available storage on the Zelda version and 1MB on Mario version.
 I soldered 2 GPIO cables on the SWDIO and SWCLK ports without any problem but then fried the ground pad on the debug holes so i soldered the ground gpio cable to the usb c port.
 ### Disconnect the battery while soldering!!!
-Then just connect the gpio cables to the relating gpio pins on the pi.
 
 ## 3. Setting up *gnwmanager*
 We need gnwmanager because it provides a lot of usefull tools like flashing the chip banks of the gnw as well as unlock its bootloader.
@@ -47,3 +46,7 @@ To add gnwmanager to the pi's path environment variables we have to run `pipx en
 
 I think openocd is mainly used to unlock the gnw's bootloader but we still have to install it as its required by gnwmanager
 `gnwmanager install openocd`
+
+Run `gnwmanager info` if following message pops up you installed it correctly
+![GNWInfo](https://github.com/Nico-Hei/GNW-Modding/blob/main/RPI_GNW_Installation.png)
+The error is okay. It appears because I havent connected the game and watch to the pi yet.
