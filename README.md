@@ -93,4 +93,8 @@ yield "rpi-gpio", cmd
 `GNWMANAGER_VERBOSITY=debug gnwmanager info` now outputs correctly
 
 ## 4. Backups and bootloader unlock
-I already did this step but iam going to try to 
+I already did this step but normally you should use `gnwmanager unlock` now and save the created backup files.
+
+## 5. Retro-Go installation
+Now we are going to install retro go as our firmware as it provides us with our game emulators.
+Iam not conducting or promoting game piracy. Please try to gather legally optained game copys.
