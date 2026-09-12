@@ -81,23 +81,14 @@ I found that pipx saved our gnwmanager openocd data in `.local/share/pipx/venvs/
 In the file `.local/share/pipx/venvs/gnwmanager/lib/python3.13/site-packages/gnwmanager/ocdbackend/openocd_backend.py` I scrolled down a bit finding the different interface settings and changing the raspberry pi's to:
 
 ```python
-# Raspberry Pi GPIO
 cmd = base_cmd.copy()
 cmd.extend(["-c", "adapter speed 1000"])
-cmd.extend(["-c", "source [find interface/raspberrypi-swd.cfg]"])
-# SWCLK - GPIO25, physical pin 22
-# SWDIO - GPIO24, physical pin 18
-#pi_sys_gpio24 = _pi_find_gpio_number("GPIO24")
-#pi_sys_gpio25 = _pi_find_gpio_number("GPIO25")
-#if pi_sys_gpio24 is not None and pi_sys_gpio25 is not None:
-  #cmd.extend(["-c", f"sysfsgpio_swd_nums {pi_sys_gpio25} {pi_sys_gpio24}"])
-#else:
-  #cmd.extend(["-c", "sysfsgpio_swd_nums 25 24"])
+cmd.extend(["-f", "interface/raspberrypi-swd.cfg"])
 cmd.extend(["-c", "transport select swd"])
-cmd.extend(["-c", "source [find target/stm32h7x.cfg]"])
+cmd.extend(["-f", "target/stm32h7x.cfg"])
 yield "rpi-gpio", cmd
 ```
-
+*File*
 
 ## 4. Backups and bootloader unlock
 I already did this step but iam going to try to 
