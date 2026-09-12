@@ -59,7 +59,20 @@ Make sure `gpiod is installed`.
 As I try to use `gnwmanager info` again the same error as before connecting occours.
 
 Using `GNWMANAGER_VERBOSITY=debug gnwmanager info` i get following error:
-![GNWError]()
+![GNWError](https://github.com/Nico-Hei/GNW-Modding/blob/main/GNWError.png)
+Openocd couldnt find our gpio pins using what i think is a special "sysfsgpio" config.
+
+Using `ls /usr/share/openocd/scripts/interface/` i can see that the "sysfsgpio-raspberrypi.cfg" exists.
+As testet my first try doing this i need to use the "raspberrypi-swd.cfg" file.
+This tells me i need to define the interface config myself:
+`openocd -f interface/raspberrypi-swd.cfg` but i also need to configure a target according to the output so i use:
+`openocd -f interface/raspberrypi-swd.cfg -c "transport select swd"`. This still wasnt able to connect to my gnw.
+
+Through trial and error i found out i needed another arg. `openocd -f interface/raspberrypi-swd.cfg -c "transport select swd" -f target/stm32h7x.cfg`
+Please dont ask me what exactly "stm32h7x.cfg" is. Maybe a config file for the gnw's cpu.
+
+After running this command iam finally able to speak to the gnw directly.
+![GNWConnected]()
 
 ## 4. Backups and bootloader unlock
 I already did this step but iam going to try to 
