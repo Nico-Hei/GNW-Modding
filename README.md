@@ -72,7 +72,10 @@ Through trial and error i found out i needed another arg. `openocd -f interface/
 Please dont ask me what exactly "stm32h7x.cfg" is. Maybe a config file for the gnw's cpu.
 
 After running this command iam finally able to speak to the gnw directly.
-![GNWConnected]()
+![GNWConnected](https://github.com/Nico-Hei/GNW-Modding/blob/main/GNWConnected.png)
+As you can see the CPU gets shown correctly "Cortex-M7 r1p1 processor detected" and the connection is ready to be used "Examination succeed".
+
+Now we have to configure this config for gnwmanager.
 
 ## 4. Backups and bootloader unlock
 I already did this step but iam going to try to 
