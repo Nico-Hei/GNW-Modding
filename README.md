@@ -24,7 +24,7 @@ First lets update the pi
 Next I check for the installed python. Regarding the gnwmanager installation guide we need >=3.9
 `python --version` shows me that I currently have version 3.13.5 pre installed.
 
-## 2. Soldering and connecting wires
+## 2. Soldering
 ![PIGPIO](https://github.com/Nico-Hei/GNW-Modding/blob/main/RPI_GNW_Pinout.png)
 *IMG source: https://pypi.org/project/gnwmanager/*
 
@@ -34,8 +34,6 @@ I soldered 2 GPIO cables on the SWDIO and SWCLK ports without any problem but th
 
 ## 3. Setting up *gnwmanager*
 We need gnwmanager because it provides a lot of usefull tools like flashing the chip banks of the gnw as well as unlock its bootloader.
-Iam not going to cover the bootloader step as ive allready done it on my first try. **Important side note** be carefull! While unlocking my bootloader
-my base firmware got deletet because of nintendos security measurments. I was not able to backup this firmware unfortunatly.
 SSH into programmer. 
 
 Then iam installing pipx: `sudo apt install pipx -y` (pipx is like pip but with built in virtual environments).
@@ -50,3 +48,6 @@ I think openocd is mainly used to unlock the gnw's bootloader but we still have 
 Run `gnwmanager info` if following message pops up you installed it correctly
 ![GNWInfo](https://github.com/Nico-Hei/GNW-Modding/blob/main/RPI_GNW_Installation.png)
 The error is okay. It appears because I havent connected the game and watch to the pi yet.
+
+## 3. Backups and bootloader unlock
+I already did this step but iam going to try to 
