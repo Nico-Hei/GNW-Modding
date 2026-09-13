@@ -118,7 +118,7 @@ Install requirements: `python3 -m pip install -r requirements.txt`
 
 Install arm-gcc-none-eabi toolchain(V.>=10): `sudo apt install gcc-arm-none-eabi`
 
-## 5.1 Adding games and retro go flashing
+## 6. Adding games and retro go flashing
 Now add your roms to retro go. The mario version has 1mb of base storage the zelda version 4mb. You will have to inform yourself about compression methods in case of wanting to add multiple games.
 [GNWRomFolders](https://github.com/Nico-Hei/GNW-Modding/blob/main/GNWRoms.png)
 
@@ -131,3 +131,13 @@ Run `make -j4 GNW_TARGET=zelda` (or =mario, depending on your system)
 
 Exit venv `deactivate`
 
+Flash firmware: `gnwmanager flash bank1 build/gw_retro_go_intflash.bin`
+
+Flash games etc.: `gnwmanager flash ext build/gw_retro_go_extflash.bin`
+
+## 7. Possible additions:
+1. SD Card Slot and support
+2. Larger flash chips (Up to 64mb)
+   -> Homebrew support
+3. Programming GNW via USB-C Port
+4. Cover Art und UI designs
