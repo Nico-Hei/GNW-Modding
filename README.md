@@ -119,3 +119,5 @@ Install requirements: `python3 -m pip install -r requirements.txt`
 Install arm-gcc-none-eabi toolchain(V.>=10): `sudo apt install gcc-arm-none-eabi`
 
 ## 5.1 Adding games
+Now add your roms to retro go. The mario version has 1mb of base storage the zelda version 4mb. You will have to inform yourself about compression methods in case of wanting to add multiple games.
+[GNWRomFolders](https://github.com/Nico-Hei/GNW-Modding/blob/main/GNWRoms.png)
