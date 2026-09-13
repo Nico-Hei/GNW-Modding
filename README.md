@@ -1,84 +1,198 @@
 # GNW-Modding
 
-I decided to mod my Zelda Nintendo Game and Watch, why?
-I wanted to play pokemon games on the go relying on the GNW's massive 6-8 hours of battery life 
-as well as its quick resume ability.
-I have already modded the GNW yesterday by using ai and 8 hours of my time. Because of some bugs which were maybe caused by
-copying and pasting every command the ai printed out mindlessly I am going 
-to redo the whole process of flashing the firmware as well as emulator and document all of it.
+I decided to mod my Zelda Nintendo Game & Watch. Why?
 
-### PLEASE do not use this repo as a guide to modding a GNW yourself. I have allready messed up my device in the first try by bricking the custom firmware
-### before being able to back it up (Unlocking the flash deleted everything).
+I wanted to play Pokémon games on the go while taking advantage of the GNW's massive 6-8 hours of battery life, as well as its quick resume functionality.
+
+I already modded the GNW yesterday using AI and about 8 hours of my time. Because of some bugs, which may have been caused by mindlessly copying and pasting every command the AI printed out, I am going to redo the entire process of flashing the firmware and emulator and document everything along the way.
+
+### PLEASE do not use this repo as a guide for modding a GNW yourself. I already messed up my device on the first attempt by bricking the default firmware before I was able to back it up.
+### Unlocking the flash erased everything.
+
+---
 
 ## 1. Setting up the programmer
-~~Iam using a **Raspberry PI Zero W**(the old version). With its one core its not the fastet machine to build c but with enough time it is working good enough.
-Ive set it up with base 32 bit raspberry pi os lite and activated ssh.~~
 
-My RPI0 is no longer in use and is being replaced by my RPI4(8gb). The RPI0 crashed to many times in the process on me while installing packages and was overall because of its speed not fun to use.
-The RPI4 might be a bit overkill but should help in the process of building packages later on.
-I installed raspberry pi os lite (64bit), set up wifi and ssh via password as this pi is not going to run any important services.
+~~I am using a **Raspberry Pi Zero W** (the old version). With its single core, it's not the fastest machine for compiling C code, but given enough time, it works well enough. I set it up with the 32-bit Raspberry Pi OS Lite image and enabled SSH.~~
 
-First lets update the pi
-`sudo apt update && apt upgrade -y`
+My RPI0 is no longer being used and has been replaced by my RPI4 (8 GB). The RPI0 crashed too many times during package installations and was generally not fun to work with because of its limited performance.
 
-Next I check for the installed python. Regarding the gnwmanager installation guide we need >=3.9
-`python --version` shows me that I currently have version 3.13.5 pre installed.
+The RPI4 might be a bit overkill, but it should help later when building packages.
+
+I installed Raspberry Pi OS Lite (64-bit), set up Wi-Fi, and enabled password-based SSH since this Pi will not be running any important services.
+
+First, let's update the Pi:
+
+```bash
+sudo apt update && sudo apt upgrade -y
+```
+
+Next, I check the installed Python version. According to the GNWManager installation guide, we need Python >= 3.9.
+
+```bash
+python --version
+```
+
+This shows that version 3.13.5 is already preinstalled.
+
+---
 
 ## 2. Soldering
-![PIGPIO](https://github.com/Nico-Hei/GNW-Modding/blob/main/RPI_GNW_Pinout.png)
-*IMG source: https://pypi.org/project/gnwmanager/*
 
-I own the Zelda Version, as you can see the Pin Layout is the same the only difference is the 4MB available storage on the Zelda version and 1MB on Mario version.
-I soldered 2 GPIO cables on the SWDIO and SWCLK ports without any problem but then fried the ground pad on the debug holes so i soldered the ground gpio cable to the usb c port.
-### Disconnect the battery while soldering!!!
+![RPI_GNW_PINOUT](https://github.com/Nico-Hei/GNW-Modding/blob/main/Images/RPI_GNW_Pinout.png)
+*Image source: https://pypi.org/project/gnwmanager/*
+
+I own the Zelda version. As you can see, the pin layout is the same. The only difference is that the Zelda version comes with 4 MB of available storage, while the Mario version only has 1 MB.
+
+I soldered two GPIO wires to the SWDIO and SWCLK pads without any issues. Unfortunately, I accidentally destroyed the ground pad on the debug header, so I ended up soldering the ground wire directly to the USB-C port instead.
+
+![GNWSetup](https://github.com/Nico-Hei/GNW-Modding/blob/main/Images/GNWSetup.jpg)
+
+### Disconnect the battery while soldering!
+
+---
 
 ## 3. Setting up *gnwmanager*
-We need gnwmanager because it provides a lot of usefull tools like flashing the chip banks of the gnw as well as unlock its bootloader.
-SSH into programmer. 
 
-Then iam installing pipx: `sudo apt install pipx -y` (pipx is like pip but with built in virtual environments(only used for python applications, does not replace pip)).
+We need GNWManager because it provides a lot of useful tools, such as flashing the GNW's memory banks and unlocking the bootloader.
 
-After this we can run `pipx install gnwmanager` to install gnwmanager.
+SSH into the programmer.
 
-To add gnwmanager to the pi's path environment variables we have to run `pipx ensurepath` and lock out and in again real quick.
+First, install pipx:
 
-I think openocd is mainly used to unlock the gnw's bootloader but we still have to install it as its required by gnwmanager
-`gnwmanager install openocd`
+```bash
+sudo apt install pipx -y
+```
 
-Run `gnwmanager info` if following message pops up you installed it correctly
-![GNWInfo](https://github.com/Nico-Hei/GNW-Modding/blob/main/RPI_GNW_Installation.png)
-The error is okay. It appears because I havent connected the game and watch to the pi yet.
+(pipx is basically pip with built-in virtual environments for Python applications. It does not replace pip.)
 
-## 3. Connecting 
-Connect your gnw to the pins on your rpi as shown on the image in the soldering step.
-Then either connect you battery again or charge the gnw via the usb c port.
-**If on any of the next steps you get weird errors check if your screen is on. The gnw has to be on most of the steps.**
+After that:
 
-Make sure `gpiod is installed`.
+```bash
+pipx install gnwmanager
+```
 
-As I try to use `gnwmanager info` again the same error as before connecting occours.
+To add GNWManager to the system PATH:
 
-Using `GNWMANAGER_VERBOSITY=debug gnwmanager info` i get following error:
-![GNWError](https://github.com/Nico-Hei/GNW-Modding/blob/main/GNWError.png)
-Openocd couldnt find our gpio pins using what i think is a special "sysfsgpio" config.
+```bash
+pipx ensurepath
+```
 
-Using `ls /usr/share/openocd/scripts/interface/` i can see that the "sysfsgpio-raspberrypi.cfg" exists.
-As testet my first try doing this i need to use the "raspberrypi-swd.cfg" file.
-This tells me i need to define the interface config myself:
-`openocd -f interface/raspberrypi-swd.cfg` but i also need to configure a target according to the output so i use:
-`openocd -f interface/raspberrypi-swd.cfg -c "transport select swd"`. This still wasnt able to connect to my gnw.
+Then log out and back in.
 
-Through trial and error i found out i needed another arg. `openocd -f interface/raspberrypi-swd.cfg -c "transport select swd" -f target/stm32h7x.cfg`
-Please dont ask me what exactly "stm32h7x.cfg" is. Maybe a config file for the gnw's cpu.
+I think OpenOCD is mainly used to unlock the GNW's bootloader, but we need to install it because GNWManager depends on it:
 
-After running this command iam finally able to speak to the gnw directly.
-![GNWConnected](https://github.com/Nico-Hei/GNW-Modding/blob/main/GNWConnected.png)
-As you can see the CPU gets shown correctly "Cortex-M7 r1p1 processor detected" and the connection is ready to be used "Examination succeed".
+```bash
+gnwmanager install openocd
+```
 
-Now we have to configure this config for gnwmanager.
-I found that pipx saved our gnwmanager openocd data in `.local/share/pipx/venvs/gnwmanager/lib/python3.13/site-packages/gnwmanager/ocdbackend/`
+Run:
 
-In the file `.local/share/pipx/venvs/gnwmanager/lib/python3.13/site-packages/gnwmanager/ocdbackend/openocd_backend.py` I scrolled down a bit finding the different interface settings and changing the raspberry pi's to:
+```bash
+gnwmanager info
+```
+
+If the following message appears, the installation was successful.
+
+![RPI_GNW_Installation](https://github.com/Nico-Hei/GNW-Modding/blob/main/Images/RPI_GNW_Installation.png)
+
+The error is expected because the Game & Watch is not connected to the Pi yet.
+
+---
+
+## 4. Connecting
+
+Connect your GNW to the GPIO pins on your Raspberry Pi as shown in the soldering diagram.
+
+Then either reconnect the battery or power the GNW via USB-C.
+
+**If you get weird errors during any of the next steps, check whether the screen is on. The GNW needs to be powered on for most of this process.**
+
+Make sure `gpiod` is installed.
+
+When I run:
+
+```bash
+gnwmanager info
+```
+
+I still get the same error as before.
+
+Running:
+
+```bash
+GNWMANAGER_VERBOSITY=debug gnwmanager info
+```
+
+produces the following error:
+
+![](https://github.com/Nico-Hei/GNW-Modding/blob/main/Images/GNWError.png)
+
+OpenOCD couldn't find the GPIO pins using what I believe is a special `sysfsgpio` configuration.
+
+Using:
+
+```bash
+ls /usr/share/openocd/scripts/interface/
+```
+
+I can see that `sysfsgpio-raspberrypi.cfg` exists.
+
+From my first attempt, I remembered that I actually needed to use `raspberrypi-swd.cfg`.
+
+This suggested that I had to define the interface configuration manually:
+
+```bash
+openocd -f interface/raspberrypi-swd.cfg
+```
+
+However, OpenOCD also needed a target configuration, so I tried:
+
+```bash
+openocd -f interface/raspberrypi-swd.cfg -c "transport select swd"
+```
+
+This still wasn't enough to connect to the GNW.
+
+Through trial and error, I discovered that I also needed:
+
+```bash
+openocd -f interface/raspberrypi-swd.cfg -c "transport select swd" -f target/stm32h7x.cfg
+```
+
+Please don't ask me what exactly `stm32h7x.cfg` is. My best guess is that it's a configuration file for the GNW's CPU.
+
+After running this command, I was finally able to communicate directly with the GNW.
+
+![GNWConnected](https://github.com/Nico-Hei/GNW-Modding/blob/main/Images/GNWConnected.png)
+
+As you can see, the CPU is detected correctly:
+
+```text
+Cortex-M7 r1p1 processor detected
+```
+
+and the connection is ready to use:
+
+```text
+Examination succeeded
+```
+
+Now GNWManager has to be configured accordingly.
+
+I found that pipx stored GNWManager's OpenOCD data in:
+
+```text
+.local/share/pipx/venvs/gnwmanager/lib/python3.13/site-packages/gnwmanager/ocdbackend/
+```
+
+Inside:
+
+```text
+openocd_backend.py
+```
+
+I found the Raspberry Pi interface settings and changed them to:
 
 ```python
 cmd = base_cmd.copy()
@@ -88,56 +202,166 @@ cmd.extend(["-c", "transport select swd"])
 cmd.extend(["-f", "target/stm32h7x.cfg"])
 yield "rpi-gpio", cmd
 ```
-*[File](https://github.com/Nico-Hei/GNW-Modding/blob/main/openocd_backend.py)*
 
-`GNWMANAGER_VERBOSITY=debug gnwmanager info` now outputs correctly
+*File: openocd_backend.py*
 
-## 4. Backups and bootloader unlock
-I already did this step but normally you should use `gnwmanager unlock` now and save the created backup files.
+After that:
 
-## 5. Retro-Go installation
-Now we are going to install retro go as our firmware as it provides us with our game emulators.
-Iam not conducting or promoting game piracy. Please try to gather legally optained game copys.
+```bash
+GNWMANAGER_VERBOSITY=debug gnwmanager info
+```
 
-First clone the Retro Go repo with this command to install necessary sub modules
-`git clone --recurse-submodules https://github.com/sylverb/game-and-watch-retro-go -b filesystem_wip`
-Because of this not used emulators shouldnt be compiled every time. This saves storage and time.
-| I needed to install git at first `sudo apt install git`
+finally produced the expected output.
 
-Then `cd game-and-watch-retro-go` cd into the folder.
+---
 
-Install pip `sudo apt install python3-pip -y`
+## 5. Backups and Bootloader Unlock
 
-Install venv `sudo apt install python3-venv -y`
+I already completed this step, but normally you should now run:
 
-Create virtual environment for project: `python3 -m venv venv`
+```bash
+gnwmanager unlock
+```
 
-Enter venv: `source venv/bin/activate`(Deactivate to exit it)
+and store the generated backup files in a safe place.
 
-Install requirements: `python3 -m pip install -r requirements.txt`
+---
 
-Install arm-gcc-none-eabi toolchain(V.>=10): `sudo apt install gcc-arm-none-eabi`
+## 6. Retro-Go Installation
 
-## 6. Adding games and retro go flashing
-Now add your roms to retro go. The mario version has 1mb of base storage the zelda version 4mb. You will have to inform yourself about compression methods in case of wanting to add multiple games.
-[GNWRomFolders](https://github.com/Nico-Hei/GNW-Modding/blob/main/GNWRoms.png)
+Now we are going to install Retro-Go as our firmware since it provides the emulators we need.
 
-Stay inside your retro go venv.
+I am not promoting or encouraging game piracy. Please obtain your game backups legally.
 
-! **DO NOT MINDLESSLY RUN** I had to reset my flash banks: `gwnmanager erase all` because of storage errors.
+Clone the Retro-Go repository along with its submodules:
 
-Run `make clean`
-Run `make -j4 GNW_TARGET=zelda` (or =mario, depending on your system) | OR `make -j4 EXTFLASH_SIZE_MB=4`(To keep the red mario theme)
+```bash
+git clone --recurse-submodules https://github.com/sylverb/game-and-watch-retro-go -b filesystem_wip
+```
 
-Exit venv `deactivate`
+This branch prevents unused emulators from being compiled every time, which saves both storage space and build time.
 
-Flash firmware: `gnwmanager flash bank1 build/gw_retro_go_intflash.bin`
+I first had to install Git:
 
-Flash games etc.: `gnwmanager flash ext build/gw_retro_go_extflash.bin`
+```bash
+sudo apt install git
+```
 
-## 7. Possible additions:
-1. SD Card Slot and support
-2. Larger flash chips (Up to 64mb)
-   -> Homebrew support
-3. Programming GNW via USB-C Port
-4. Cover Art und UI designs
+Enter the project directory:
+
+```bash
+cd game-and-watch-retro-go
+```
+
+Install pip:
+
+```bash
+sudo apt install python3-pip -y
+```
+
+Install venv:
+
+```bash
+sudo apt install python3-venv -y
+```
+
+Create a virtual environment:
+
+```bash
+python3 -m venv venv
+```
+
+Activate it:
+
+```bash
+source venv/bin/activate
+```
+
+(Use `deactivate` to leave it.)
+
+Install the requirements:
+
+```bash
+python3 -m pip install -r requirements.txt
+```
+
+Install the ARM GCC toolchain (version 10 or newer):
+
+```bash
+sudo apt install gcc-arm-none-eabi
+```
+
+---
+
+## 7. Adding Games and Flashing Retro-Go
+
+Now add your ROMs to Retro-Go.
+
+The Mario version has 1 MB of external storage, while the Zelda version has 4 MB. If you want to store multiple games, you'll probably need to research compression options.
+
+![GNWRoms](https://github.com/Nico-Hei/GNW-Modding/blob/main/Images/GNWRoms.png)
+
+Stay inside your Retro-Go virtual environment.
+
+⚠️ **DO NOT RUN THIS BLINDLY**
+
+I had to reset my flash memory with:
+
+```bash
+gnwmanager erase all
+```
+
+because I ran into storage-related issues.
+
+Build the firmware:
+
+```bash
+make clean
+```
+
+```bash
+make -j4 GNW_TARGET=zelda
+```
+*Zelda Theme*
+
+or
+
+```bash
+make -j4 GNW_TARGET=mario
+```
+*Mario Theme*
+
+or
+
+```bash
+make -j4 EXTFLASH_SIZE_MB=4
+```
+*Mario Theme on Zelda Console(Expanded storage capacity)*
+
+Leave the virtual environment:
+
+```bash
+deactivate
+```
+
+Flash the firmware:
+
+```bash
+gnwmanager flash bank1 build/gw_retro_go_intflash.bin
+```
+
+Flash the game storage:
+
+```bash
+gnwmanager flash ext build/gw_retro_go_extflash.bin
+```
+
+---
+
+## 8. Possible Additions
+
+1. SD card slot and support
+2. Larger flash chips (up to 64 MB)
+   - Homebrew support
+3. Programming the GNW via the USB-C port
+4. Cover art and custom UI designs
