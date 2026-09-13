@@ -127,7 +127,7 @@ Stay inside your retro go venv.
 ! **DO NOT MINDLESSLY RUN** I had to reset my flash banks: `gwnmanager erase all` because of storage errors.
 
 Run `make clean`
-Run `make -j4 GNW_TARGET=zelda` (or =mario, depending on your system)
+Run `make -j4 GNW_TARGET=zelda` (or =mario, depending on your system) | OR `make -j4 EXTFLASH_SIZE_MB=4`(To keep the red mario theme)
 
 Exit venv `deactivate`
 
