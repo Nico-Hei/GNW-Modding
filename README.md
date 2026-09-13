@@ -113,3 +113,9 @@ Install venv `sudo apt install python3-venv -y`
 Create virtual environment for project: `python3 -m venv venv`
 
 Enter venv: `source venv/bin/activate`(Deactivate to exit it)
+
+Install requirements: `python3 -m pip install -r requirements.txt`
+
+Install arm-gcc-none-eabi toolchain(V.>=10): `sudo apt install gcc-arm-none-eabi`
+
+## 5.1 Adding games
